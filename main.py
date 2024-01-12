@@ -1,8 +1,10 @@
+import os
 import datetime
 import sqlite3
 from discordwebhook import Discord
 from flask import Flask, render_template, request
 from datetime import datetime,timedelta
+from dotenv import load_dotenv, dotenv_values
 
 app = Flask(__name__)
 
@@ -29,10 +31,11 @@ def insert_to_table(data):
 def send_to_discord(data):
     open_and_connect_db()
     x = str(data)
-    discord = Discord(url="https://discord.com/api/webhooks/1194316014960259193/-DiBmEBIiG1SUPXd8c8HRUyG9ky4e-SZyOKPVw4pARAQFcfYr7S81eYLdU8TPDIPOtcc")
+    load_dotenv()
+    url = os.getenv("url")
+    discord = Discord(url=url)
     discord.post(content=x)
     return "Must to return value"
-
 
 @app.route("/")
 def index():
